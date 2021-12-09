@@ -1,2 +1,3 @@
 # refactortools
-Refactoring tool set
+
+`refactortools` is a refactoring tool set.
