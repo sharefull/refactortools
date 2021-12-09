@@ -22,7 +22,7 @@ $ go vet -vettool=$(which errisas) ./...
 
 ## Analyze with golang.org/x/tools/go/analysis
 
-You can use [dive.Analyzer](https://pkg.go.dev/github.com/gostaticanalysis/dive/#Analyzer) with [unitchecker](https://golang.org/x/tools/go/analysis/unitchecker).
+You can use [errisas.Analyzer](https://pkg.go.dev/github.com/sharefull/refactortools/errisas/#Analyzer) with [unitchecker](https://golang.org/x/tools/go/analysis/unitchecker).
 
 <!-- links -->
 [gopkg]: https://pkg.go.dev/github.com/sharefull/refactortools/errisas
