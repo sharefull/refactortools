@@ -14,7 +14,7 @@ $ go install github.com/sharefull/refactortools/errisas/cmd/errisas@latest
 
 ## How to use
 
-`dive` run with `go vet` as below when Go is 1.12 and higher.
+`errisas` run with `go vet` as below when Go is 1.12 and higher.
 
 ```bash
 $ go vet -vettool=$(which errisas) ./...
