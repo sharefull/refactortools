@@ -6,7 +6,7 @@
 
 ## Install
 
-You can get `errisas` by `go install` command (Go 1.16 and higher).
+You can get `gormcheck` by `go install` command (Go 1.16 and higher).
 
 ```bash
 $ go install github.com/sharefull/refactortools/gormcheck/cmd/gormcheck@latest
