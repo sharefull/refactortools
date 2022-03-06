@@ -22,7 +22,22 @@ $ go vet -vettool=$(which gormcheck) ./...
 
 ## Analyze with golang.org/x/tools/go/analysis
 
-You can use [gormcheck.Analyzer](https://pkg.go.dev/github.com/sharefull/refactortools/gormcheck/#Analyzer) with [unitchecker](https://golang.org/x/tools/go/analysis/unitchecker).
+You can use [gormcheck.Analyzers](https://pkg.go.dev/github.com/sharefull/refactortools/gormcheck/#Analyzers) with [unitchecker](https://golang.org/x/tools/go/analysis/unitchecker).
+
+```go
+package main
+
+import (
+	"github.com/sharefull/refactortools/gormcheck"
+	"golang.org/x/tools/go/analysis/unitchecker"
+)
+
+func main() { unitchecker.Main(gormcheck.Analyzers...) }
+```
+
+The gormcheck provides following analyzers.
+
+* [gorminjection.Analyzer](https://pkg.go.dev/github.com/sharefull/refactortools/gormcheck/passes/gorminjection#Analyzer)
 
 <!-- links -->
 [gopkg]: https://pkg.go.dev/github.com/sharefull/refactortools/gormcheck

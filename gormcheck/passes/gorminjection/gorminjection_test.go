@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/gostaticanalysis/testutil"
-	"github.com/sharefull/refactortools/gormcheck/gorminjection"
+	"github.com/sharefull/refactortools/gormcheck/passes/gorminjection"
 	"golang.org/x/tools/go/analysis/analysistest"
 )
 
