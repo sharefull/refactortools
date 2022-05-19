@@ -1,17 +1,22 @@
 package a
 
-type ARequest struct {
-	ID int `json:"id"` // want "field ID is not required"
+type ARequest struct { // want "struct ARequest is not required"
+	ID int `json:"id"`
 }
 
-type BRequest struct {
-	ID int `json:"id" binding:"required"` // OK
+type BRequest struct { // OK
+	ID int `json:"id" binding:"required"`
 }
 
-type CRequest struct {
-	ID int `json:"id" binding:"required,abc"` // OK
+type CRequest struct { // OK
+	ID int `json:"id" binding:"required,abc"`
 }
 
-type DRequest struct {
-	ID int `json:"id" binding:"abc"` // want "field ID is not required"
+type DRequest struct { // want "struct DRequest is not required"
+	ID int `json:"id" binding:"abc"`
+}
+
+type ERequest struct { // OK
+	ID  int `json:"id" binding:"required"`
+	Foo int `json:"id2"`
 }

@@ -35,6 +35,8 @@ func run(pass *analysis.Pass) (interface{}, error) {
 				if typ == nil || typ.Fields == nil {
 					continue
 				}
+				var hasRequired bool
+
 				for _, field := range typ.Fields.List {
 					if field.Tag == nil || field.Tag.Kind != token.STRING {
 						continue
@@ -45,16 +47,17 @@ func run(pass *analysis.Pass) (interface{}, error) {
 					}
 					tag := reflect.StructTag(strTag)
 					binding := strings.Split(tag.Get("binding"), ",")
-					var hasRequired bool
+
 					for _, b := range binding {
 						if b == "required" {
 							hasRequired = true
 							break
 						}
 					}
-					if !hasRequired {
-						pass.Reportf(field.Pos(), "field %s is not required", field.Names[0].Name)
-					}
+				}
+
+				if !hasRequired {
+					pass.Reportf(typ.Pos(), "struct %s is not required", spec.Name.Name)
 				}
 			}
 		}
