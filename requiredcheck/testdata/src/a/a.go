@@ -11,3 +11,7 @@ type BRequest struct {
 type CRequest struct {
 	ID int `json:"id" binding:"required,abc"` // OK
 }
+
+type DRequest struct {
+	ID int `json:"id" binding:"abc"` // want "field ID is not required"
+}
