@@ -38,9 +38,11 @@ func run(pass *analysis.Pass) (interface{}, error) {
 				var hasRequired bool
 
 				for _, field := range typ.Fields.List {
+
 					if field.Tag == nil || field.Tag.Kind != token.STRING {
 						continue
 					}
+
 					strTag, err := strconv.Unquote(field.Tag.Value)
 					if err != nil {
 						continue
