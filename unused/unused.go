@@ -37,6 +37,10 @@ func run(pass *internal.Pass) error {
 		}
 
 		file := pass.Fset.File(obj.Pos())
+		if file == nil {
+			continue
+		}
+
 		if strings.HasSuffix(file.Name(), "_test.go") {
 			continue
 		}
