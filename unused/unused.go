@@ -1,7 +1,6 @@
 package unused
 
 import (
-	"fmt"
 	"go/token"
 	"go/types"
 	"strings"
@@ -28,10 +27,7 @@ var Analyzer = &internal.Analyzer{
 }
 
 func run(pass *internal.Pass) error {
-	fmt.Println(pass.PkgPath)
-	fmt.Println("Uses")
-	for id, obj := range pass.TypesInfo.Uses {
-		fmt.Println("\t", id)
+	for _, obj := range pass.TypesInfo.Uses {
 		if obj == nil {
 			continue
 		}
@@ -45,21 +41,27 @@ func run(pass *internal.Pass) error {
 			continue
 		}
 
+		if strings.Contains(file.Name(), "moqs") {
+			continue
+		}
+
 		if obj.Exported() {
 			id := obj.Pkg().Path() + "." + obj.Name()
 			Uses[id] = obj
 		}
 	}
 
-	fmt.Println("Defs")
-	for id, obj := range pass.TypesInfo.Defs {
-		fmt.Println("\t", id)
+	for _, obj := range pass.TypesInfo.Defs {
 		if obj == nil {
 			continue
 		}
 
 		file := pass.Fset.File(obj.Pos())
 		if strings.HasSuffix(file.Name(), "_test.go") {
+			continue
+		}
+
+		if strings.Contains(file.Name(), "moqs") {
 			continue
 		}
 

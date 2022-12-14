@@ -45,8 +45,9 @@ func run() error {
 		}
 	}
 
-	fmt.Println(unused.Defs)
-	fmt.Println(unused.Uses)
+	//fmt.Println("------------")
+	//fmt.Println("Defs:", unused.Defs)
+	//fmt.Println("Uses:", unused.Uses)
 
 	fset := unused.Analyzer.Config.Fset
 	for id, obj := range unused.Defs {

@@ -3,6 +3,7 @@ package unused_test
 import (
 	"bytes"
 	"flag"
+	"fmt"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -24,9 +25,26 @@ func init() {
 
 func Test(t *testing.T) {
 	pkgs := load(t, testdata(t), "a")
+	pkgs2 := load(t, testdata(t), "a/b")
 	for _, pkg := range pkgs {
 		prog, funcs := buildssa(t, pkg)
 		run(t, pkg, prog, funcs)
+	}
+	for _, pkg := range pkgs2 {
+		prog, funcs := buildssa(t, pkg)
+		run(t, pkg, prog, funcs)
+	}
+
+	//fmt.Println("------------")
+	//fmt.Println("Defs:", unused.Defs)
+	//fmt.Println("Uses:", unused.Uses)
+
+	fset := unused.Analyzer.Config.Fset
+	for id, obj := range unused.Defs {
+		if _, ok := unused.Uses[id]; !ok {
+			pos := fset.Position(obj.Pos())
+			fmt.Println(pos, id, "unused")
+		}
 	}
 }
 
