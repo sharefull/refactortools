@@ -15,7 +15,7 @@ func G() {
 	b.B3()
 
 	a := Atype{}
-	fmt.Println(a.AAA)
+	fmt.Println(a)
 }
 
 func H() {
