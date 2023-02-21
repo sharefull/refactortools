@@ -12,6 +12,7 @@ type AInterface interface {
 	Get() bool
 	Set()
 	Put()
+	Put2()
 }
 
 type b4Type struct {
@@ -37,6 +38,8 @@ func (b4 *b4Type) Get() bool {
 func (b4 *b4Type) Set() {}
 
 func (b4 *b4Type) Put() {}
+
+func (b4 *b4Type) Put2() {}
 
 func B1() {
 	a := NewApp()

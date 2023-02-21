@@ -4,6 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"go/types"
 	"os"
 
 	"github.com/sharefull/refactortools/unused"
@@ -51,11 +52,51 @@ func run() error {
 
 	fset := unused.Analyzer.Config.Fset
 	for id, obj := range unused.Defs {
-		if _, ok := unused.Uses[id]; !ok {
+		if _, ok := unused.Uses[id]; !ok && !usedAsInterface(obj) {
 			pos := fset.Position(obj.Pos())
 			fmt.Println(pos, id, "unused")
 		}
 	}
 
 	return nil
+}
+
+func usedAsInterface(obj types.Object) bool {
+	fun, _ := obj.(*types.Func)
+	if fun == nil {
+		return false
+	}
+
+	sig, _ := fun.Type().(*types.Signature)
+	if sig == nil {
+		return false
+	}
+
+	if sig.Recv() == nil {
+		return false
+	}
+
+	named, _ := sig.Recv().Type().(*types.Named)
+	if named == nil {
+		return false
+	}
+
+	for _, iface := range unused.Interfaces {
+		if types.Implements(named, iface) && unused.Uses[methodOf(iface, obj.Name())] != nil {
+			return true
+		}
+	}
+
+	return false
+}
+
+func methodOf(iface *types.Interface, name string) string {
+	for i := 0; i < iface.NumMethods(); i++ {
+		m := iface.Method(i)
+		if m.Name() == name {
+			id := m.Pkg().Path() + "." + m.Name()
+			return id
+		}
+	}
+	return ""
 }

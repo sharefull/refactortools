@@ -3,15 +3,20 @@ package unused
 import (
 	"go/token"
 	"go/types"
+	"log"
 	"strings"
 
+	"github.com/gostaticanalysis/analysisutil"
 	"github.com/sharefull/refactortools/unused/internal"
+	"golang.org/x/exp/maps"
 	"golang.org/x/tools/go/packages"
+	"golang.org/x/tools/go/types/objectpath"
 )
 
 var (
-	Uses = make(map[string]types.Object)
-	Defs = make(map[string]types.Object)
+	Uses       = make(map[string]types.Object)
+	Defs       = make(map[string]types.Object)
+	Interfaces map[string]*types.Interface
 )
 
 var Analyzer = &internal.Analyzer{
@@ -56,6 +61,11 @@ func run(pass *internal.Pass) error {
 			continue
 		}
 
+		objVar, _ := obj.(*types.Var)
+		if objVar != nil && objVar.IsField() {
+			continue
+		}
+
 		file := pass.Fset.File(obj.Pos())
 		if strings.HasSuffix(file.Name(), "_test.go") {
 			continue
@@ -67,9 +77,14 @@ func run(pass *internal.Pass) error {
 
 		if obj.Exported() {
 			id := obj.Pkg().Path() + "." + obj.Name()
+			p, _ := objectpath.For(obj)
+			log.Println("p:", p, "id:", id)
 			Defs[id] = obj
 		}
 	}
+
+	Interfaces = make(map[string]*types.Interface)
+	maps.Copy(Interfaces, analysisutil.Interfaces(pass.Types))
 
 	return nil
 }
